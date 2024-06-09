@@ -7,6 +7,7 @@ interface Navbar {
 import React from 'react'
 import Router from 'next/router';
 import Image from 'next/image';
+import { signOut } from 'next-auth/react';
 const Navbar :React.FC<Navbar>= ({name, email, imagesrc}) => {
   return (
    <div>
@@ -21,7 +22,7 @@ const Navbar :React.FC<Navbar>= ({name, email, imagesrc}) => {
         </div>
       </div>
         <button
-          onClick={() => {Router.push('/api/auth/logout')}}
+          onClick={() => signOut() }
           className="text-gray-600 hover:text-gray-900 border border-gray-200 "
         >
         <LogOutIcon className="h-5 w-5" />

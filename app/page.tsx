@@ -16,10 +16,10 @@ export default function Component() {
     
     console.log('Selected option:', option);
   };
-  const session = useSession();
-  if(session){
-    router.push('/dashboard');
-  }
+  const { data: session, status } = useSession();
+ if(status === "authenticated"){
+  router.push('/dashboard');
+ }
 
   return (
     <div className="flex min-h-[100vh] items-center justify-center bg-gray-50">
