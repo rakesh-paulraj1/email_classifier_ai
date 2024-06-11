@@ -23,7 +23,7 @@ import OpenAI from 'openai';
 import { NextResponse } from 'next/server';
 
 const openai = new OpenAI({
-  apiKey: "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" ?? '',
+  apiKey: "" ?? '',
   dangerouslyAllowBrowser: true,
 });
 

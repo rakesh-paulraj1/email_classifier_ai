@@ -16,7 +16,7 @@ interface CategorizedEmailProps extends FilteredEmailProps {
     classification: string;
 }
 const openai = new OpenAI({
-    apiKey:"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" ?? '',
+    apiKey:"h" ?? '',
     dangerouslyAllowBrowser: true,
 });
 
