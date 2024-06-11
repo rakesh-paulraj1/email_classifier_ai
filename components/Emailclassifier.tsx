@@ -1,5 +1,5 @@
 interface filterdemailProps {
-    map(arg0: (email: any, id: any) => import("react").JSX.Element): import("react").ReactNode;
+    map(arg0: (email: any, key: any) => import("react").JSX.Element): import("react").ReactNode;
     id: number;
     subject: string;
     from: string;
@@ -40,11 +40,11 @@ export function Emailclassifier({
     <ul>
         {categorizedEmails && Array.isArray(categorizedEmails) ? (
             categorizedEmails.map((email, id) => (
-                <EmailCard key={id} from={email.from} subject={email.subject} classification={email.classification} body={email.body} />
+                <EmailCard key={id} from={email.from} subject={email.subject} classification={email.classification} id={0} body={email.body} />
             ))
         ) : (
             nonclassifiedEmails.map((email, id) => (
-                <EmailCard key={id} from={email.from} subject={email.subject} classification={""} body={email.body} />
+                <EmailCard key={id} from={email.from} subject={email.subject} classification={""} body={email.body} id={0} />
             ))
         )}
     </ul>
