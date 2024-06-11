@@ -46,6 +46,7 @@ const Dashboard = () => {
         emails: emails,
       });
       setCategorizedEmails(response.categorizedEmails);
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
@@ -84,7 +85,7 @@ const Dashboard = () => {
 
       <div className={"h-screen grid grid-cols-1 py-10 flex justify-center"}>
         <div className="col-span-1 md:col-span-3 my-20 w-[90%] md:w-[80%] mx-auto">
-          <Button onClick={() => handleClassification(nonclassifiedEmails)}>
+          <Button onClick={handleclick}>
             Classify
           </Button>
           <Emailclassifier
