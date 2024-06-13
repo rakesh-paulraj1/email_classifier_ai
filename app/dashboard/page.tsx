@@ -24,7 +24,6 @@ import { useSession } from 'next-auth/react';
 import Navbar from '@/components/Navbar';
 import { useRouter } from 'next/navigation';
 import { Emailclassifier } from '@/components/Emailclassifier';
-import { classifyEmails } from "@/lib/gptclassifier";
 import Button from '@/components/ui/button';
 import axios from 'axios';
 
@@ -35,18 +34,17 @@ const Dashboard = () => {
     useState<CATEGORIZED_EMAILS>();
   const [emails, setEmails] = useState<emails[]>([]);
   const router = useRouter();
+  const [filterValue, setFilterValue] = useState<number>(10);
+
   const nonclassifiedEmails = emails;
-  const handleClassification = async (nonclassifiedEmails: EMAIL[]) => {
-    const classificationResult = await classifyEmails(nonclassifiedEmails);
-    setCategorizedEmails(classificationResult);
-  };
+
   const handleclick = async () => {
     try {
       const response = await axios.post("/api/user/classifier", {
         emails: emails,
       });
-      setCategorizedEmails(response.categorizedEmails);
-      console.log(response);
+      setCategorizedEmails(response.data);
+      console.log(response.data);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +53,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch("/api/user/mails");
+        const response = await fetch(`/api/user/mails?${filterValue}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch emails");
@@ -70,7 +68,7 @@ const Dashboard = () => {
       }
     };
     fetchEmails();
-  }, []);
+  },[filterValue]);
   if (status === "unauthenticated") {
     router.push("/");
   }
@@ -84,10 +82,32 @@ const Dashboard = () => {
       />
 
       <div className={"h-screen grid grid-cols-1 py-10 flex justify-center"}>
+     
         <div className="col-span-1 md:col-span-3 my-20 w-[90%] md:w-[80%] mx-auto">
+          <div className="mb-3">
           <Button onClick={handleclick}>
             Classify
           </Button>
+          <div className='flex items-center gap-2'>
+          <h4 className='font-semibold'>Filter :</h4>
+          <input
+            className=' text-center bg-white rounded text-black w-[10vh] border-2 border-slate-300'
+            type='number'
+            placeholder='filter'
+            step="1"
+            max="50"
+            min="10"
+            value={filterValue}
+            onChange={(e) => {
+              const value = e.target.value;
+              setFilterValue(parseInt(value, 10));
+            }}
+          />
+        
+        </div>
+          </div>
+        
+          
           <Emailclassifier
             categorizedEmails={categorizedEmails}
             nonclassifiedEmails={nonclassifiedEmails}

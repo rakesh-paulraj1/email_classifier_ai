@@ -65,6 +65,7 @@ export async function POST(req:NextRequest, res:NextResponse) {
   const categorizedEmails=await classifyemails(emails.emails);
  
   return NextResponse.json(categorizedEmails);
+  console.log(categorizedEmails);
   }catch(e){
     console.log("the error is "+e);
     return NextResponse.json({

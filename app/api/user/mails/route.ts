@@ -4,9 +4,9 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/lib/auth';
 import { formatEmail, separateHTMLandText, stripHTMLAndCSS } from '@/lib/emailFormetter';
+import { useParams } from 'next/navigation';
 
-// getBody function extract the body of emails , we are using a separate function here because
-//email body can be of different time plain text or html
+
 function getBody(payload: any) {
 
   let body = '';
@@ -30,7 +30,7 @@ function getBody(payload: any) {
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(NEXT_AUTH);
-
+ const requests =req.param;yield
   if (!session) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
@@ -47,7 +47,7 @@ export async function GET(req: NextRequest) {
     const response = await gmail.users.messages.list({
       userId: 'me',
       q: '',
-      maxResults: 10
+      maxResults: Number(requests)
     });
 
     const messages = response.data.messages || [];
