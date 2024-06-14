@@ -53,7 +53,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch(`/api/user/mails?${filterValue}`);
+        const response = await fetch(`/api/user/mails?requests=${filterValue}`);
 
         if (!response.ok) {
           throw new Error("Failed to fetch emails");
@@ -88,7 +88,7 @@ const Dashboard = () => {
           <Button onClick={handleclick}>
             Classify
           </Button>
-          <div className='flex items-center gap-2'>
+          <div className='flex items-center gap-2 mt-3'>
           <h4 className='font-semibold'>Filter :</h4>
           <input
             className=' text-center bg-white rounded text-black w-[10vh] border-2 border-slate-300'

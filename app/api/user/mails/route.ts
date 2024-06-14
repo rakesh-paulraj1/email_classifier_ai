@@ -30,7 +30,8 @@ function getBody(payload: any) {
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(NEXT_AUTH);
- const requests =req.param;yield
+ const noofemails=req.nextUrl.searchParams.get("requests")
+ 
   if (!session) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
@@ -47,7 +48,7 @@ export async function GET(req: NextRequest) {
     const response = await gmail.users.messages.list({
       userId: 'me',
       q: '',
-      maxResults: Number(requests)
+      maxResults: Number(noofemails)
     });
 
     const messages = response.data.messages || [];
@@ -55,16 +56,17 @@ export async function GET(req: NextRequest) {
     const emailDetails = await Promise.all(
       messages.map(async (message) => {
         const msg = await gmail.users.messages.get({
-          userId: 'me',
+          userId: "me",
           id: message.id,
         });
         const headers = msg.data.payload.headers;
-        const subjectHeader = headers.find(header => header.name === 'Subject');
-        const fromHeader = headers.find(header => header.name === 'From');
-        const subject = subjectHeader ? subjectHeader.value : 'No Subject';
-        let from = 'Unknown Sender';
+        const subjectHeader = headers.find(
+          (header) => header.name === "Subject"
+        );
+        const fromHeader = headers.find((header) => header.name === "From");
+        const subject = subjectHeader ? subjectHeader.value : "No Subject";
+        let from = "Unknown Sender";
 
-        
         if (fromHeader) {
           const match = fromHeader.value.match(/<(.+?)>/);
           if (match) {
@@ -77,8 +79,12 @@ export async function GET(req: NextRequest) {
         const formatedText = formatEmail(text);
         const sanitizedText = stripHTMLAndCSS(formatedText);
 
-
-        return { id: message.id, subject, from, body: { text: sanitizedText, html } };
+        return {
+          id: message.id,
+          subject,
+          from,
+          body: { text: sanitizedText, html },
+        };
       })
     );
 
