@@ -8,10 +8,7 @@ import { useSession } from 'next-auth/react';
 
  function AuroraBackgroundDemo() {
   const router = useRouter();
-  const { data: session, status } = useSession();
-if(status === "authenticated"){
- router.push('/dashboard');
-}
+
   return (
     <AuroraBackground>
       <motion.div
