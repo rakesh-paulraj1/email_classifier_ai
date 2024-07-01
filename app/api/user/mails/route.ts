@@ -1,5 +1,4 @@
 import { google } from 'googleapis';
-
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/lib/auth';
@@ -52,6 +51,7 @@ export async function GET(req: NextRequest) {
     });
 
     const messages = response.data.messages || [];
+    console.log(messages);
 
     const emailDetails = await Promise.all(
       messages.map(async (message) => {
@@ -78,7 +78,7 @@ export async function GET(req: NextRequest) {
         const { text, html } = separateHTMLandText(body);
         const formatedText = formatEmail(text);
         const sanitizedText = stripHTMLAndCSS(formatedText);
-
+        console.log("body"+body);
         return {
           id: message.id,
           subject,

@@ -54,7 +54,7 @@ async function classifyemails(emails: emails[]): Promise<categorized[]> {
       }
     })
   );
-
+ console.log(categorizedEmails);
   return categorizedEmails;
 }
 
