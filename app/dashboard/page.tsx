@@ -30,12 +30,15 @@ import axios from 'axios';
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
+
+ 
+
   const [categorizedEmails, setCategorizedEmails] =
     useState<CATEGORIZED_EMAILS>();
   const [emails, setEmails] = useState<emails[]>([]);
   const router = useRouter();
   const [filterValue, setFilterValue] = useState<number>(10);
-
+  
   const nonclassifiedEmails = emails;
 
   const handleclick = async () => {

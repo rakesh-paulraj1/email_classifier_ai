@@ -3,7 +3,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
 import { NEXT_AUTH } from '@/lib/auth';
 import { formatEmail, separateHTMLandText, stripHTMLAndCSS } from '@/lib/emailFormetter';
-import { useParams } from 'next/navigation';
+
 
 
 function getBody(payload: any) {
@@ -34,10 +34,16 @@ export async function GET(req: NextRequest) {
   if (!session) {
     return NextResponse.json({ error: 'Not authenticated' }, { status: 401 });
   }
+  console.log(session);
 
-  const { accessToken } = session.user;
+  const accessToken = session.access_token;
+  console.log(session.access_token);
+  const oAuth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_CLIENT_ID,
+    process.env.GOOGLE_CLIENT_SECRET,
 
-  const oAuth2Client = new google.auth.OAuth2();
+
+  );
   oAuth2Client.setCredentials({ access_token: accessToken });
 
   const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
@@ -46,12 +52,11 @@ export async function GET(req: NextRequest) {
 
     const response = await gmail.users.messages.list({
       userId: 'me',
-      q: '',
       maxResults: Number(noofemails)
     });
 
     const messages = response.data.messages || [];
-    console.log(messages);
+    
 
     const emailDetails = await Promise.all(
       messages.map(async (message) => {

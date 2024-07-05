@@ -11,23 +11,21 @@ export const NEXT_AUTH = {
           scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email openid https://www.googleapis.com/auth/gmail.readonly',
         },
       },
-    }),
+    })
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
-    async session({ session, token }: { session: any; token: any }) {
-      if (token) {
-        session.user.accessToken = token.access_token;
-        session.user.refreshToken = token.refresh_token;
-      }
-      return session;
-    },
-    async jwt({ token, account }: { token: any; account: any }) {
+    async jwt({token, account}:{ account: any, token: any }) {
       if (account) {
-        token.accessToken = account.access_token;
-        token.refreshToken = account.refresh_token;
+        token = Object.assign({}, token, { access_token: account.access_token });
       }
-      return token;
+      
+      return token
     },
-  },
+    async session({session, token}: { session: any, token: any }) {
+    if(session) {
+      session = Object.assign({}, session, {access_token: token.access_token})
+    }
+    return session
+}  }
 }
