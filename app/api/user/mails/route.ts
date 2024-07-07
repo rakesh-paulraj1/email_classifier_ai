@@ -1,3 +1,4 @@
+/*
 import { google } from 'googleapis';
 import { NextRequest, NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
@@ -29,6 +30,7 @@ function getBody(payload: any) {
 
 export async function GET(req: NextRequest) {
   const session = await getServerSession(NEXT_AUTH);
+  
  const noofemails=req.nextUrl.searchParams.get("requests")
  
   if (!session) {
@@ -40,10 +42,7 @@ export async function GET(req: NextRequest) {
   console.log(session.access_token);
   const oAuth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_CLIENT_ID,
-    process.env.GOOGLE_CLIENT_SECRET,
-
-
-  );
+    process.env.GOOGLE_CLIENT_SECRET,);
   oAuth2Client.setCredentials({ access_token: accessToken });
 
   const gmail = google.gmail({ version: 'v1', auth: oAuth2Client });
@@ -100,3 +99,42 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Failed to fetch emails' }, { status: 500 });
   }
 }
+  */
+
+import { NEXT_AUTH } from "@/lib/auth";
+import axios from "axios";
+import { getServerSession } from "next-auth";
+import { NextRequest, NextResponse } from "next/server";
+const session=await getServerSession(NEXT_AUTH);
+const accessToken=session.access_token;
+
+const apipEndPoint="https://gmail.googleapis.com/gmail/v1/users/me/messages"
+
+const headers={
+  Authorization:`Bearer ${accessToken}`,
+  Accept:"application/json"
+}
+ export const getemails=async(noofemails:number)=>{
+try{ 
+  const response=await axios.get(apipEndPoint,{headers,params:{
+    maxResults:(noofemails),
+  }});
+  console.log(response.data);
+  return response.data;
+}catch(error){
+  console.log(error);
+  return error;
+}
+}
+
+export async function GET(req: NextRequest) {
+  const noofemails=req.nextUrl.searchParams.get("requests")||"10";
+ try{ const response =await getemails(parseInt(noofemails));
+  console.log(response);
+  return NextResponse.json({response}, { status: 200 });}
+  catch (error) {
+    console.error('Error fetching emails', error);
+    return NextResponse.json({ error: 'Failed to fetch emails' }, { status: 500 });
+  }
+}
+

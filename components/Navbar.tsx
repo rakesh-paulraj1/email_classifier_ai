@@ -9,6 +9,7 @@ import Router from 'next/router';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 const Navbar :React.FC<Navbar>= ({name, email, imagesrc}) => {
+   
   return (
    <div>
     <header className="flex h-16 w-full items-center justify-between bg-white px-4 md:px-6 shadow-sm border border-gray-200 dark:border-gray-800">
@@ -22,8 +23,10 @@ const Navbar :React.FC<Navbar>= ({name, email, imagesrc}) => {
         </div>
       </div>
         <button
-          onClick={() => signOut() }
-          className="text-gray-600 hover:text-gray-900 border border-gray-200 "
+            onClick={() => {
+    signOut()
+    Router.push('/')
+}}          className="text-gray-600 hover:text-gray-900 border border-gray-200 "
         >
         <LogOutIcon className="h-5 w-5" />
         <span className="sr-only">Logout</span>

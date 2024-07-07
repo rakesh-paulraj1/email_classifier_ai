@@ -4,7 +4,7 @@ import { motion } from "framer-motion";
 import { useRouter } from 'next/navigation';
 import React from "react";
 import AuroraBackground from "../components/ui/aurora-background";
-import { useSession } from 'next-auth/react';
+
 
  function AuroraBackgroundDemo() {
   const router = useRouter();

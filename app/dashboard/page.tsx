@@ -26,7 +26,7 @@ import { useRouter } from 'next/navigation';
 import { Emailclassifier } from '@/components/Emailclassifier';
 import Button from '@/components/ui/button';
 import axios from 'axios';
-
+import { getemails } from '../api/user/mails/route';
 
 const Dashboard = () => {
   const { data: session, status } = useSession();
@@ -53,12 +53,12 @@ const Dashboard = () => {
     }
   };
 
-  useEffect(() => {
+/*useEffect(() => {
     const fetchEmails = async () => {
       try {
-        const response = await fetch(`/api/user/mails?requests=${filterValue}`);
-
-        if (!response.ok) {
+       const response=await fetch(`api/user/mails/${filterValue}`);
+       console.log(response);
+       /* if (!response.ok) {
           throw new Error("Failed to fetch emails");
         }
 
@@ -66,15 +66,16 @@ const Dashboard = () => {
         const emails: emails[] = data.emailDetails;
         setEmails(emails);
       } catch (error) {
-        console.error("Error fetching and classifying emails:", error);
-      } finally {
-      }
+        console.log("Error fetching and classifying emails:", error);
+      } finally { }
     };
     fetchEmails();
-  },[filterValue]);
+  },[filterValue]);*/
+  
   if (status === "unauthenticated") {
     router.push("/");
   }
+
 
   return (
     <div>
