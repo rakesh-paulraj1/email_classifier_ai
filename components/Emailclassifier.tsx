@@ -39,14 +39,30 @@ export function Emailclassifier({
 ) : (
     <ul>
         {categorizedEmails && Array.isArray(categorizedEmails) ? (
-            categorizedEmails.map((email, id) => (
-                <EmailCard key={id} from={email.from} subject={email.subject} classification={email.classification} id={0} body={email.body} />
-            ))
-        ) : (
-            nonclassifiedEmails.map((email, id) => (
-                <EmailCard key={id} from={email.from} subject={email.subject} classification={""} body={email.body} id={0} />
-            ))
-        )}
+    categorizedEmails.map((email, id) => (
+        <EmailCard
+            key={id}
+            from={email.from}
+            subject={email.subject}
+            classification={email.classification}
+            id={id}  
+            body={email.body}
+        />
+    ))
+) : (
+    nonclassifiedEmails && Object.values(nonclassifiedEmails).map((email, id) => (
+        <EmailCard
+            key={id}
+            from={email.from}
+            subject={email.subject}
+            classification={""}  // Assuming nonclassified emails have empty classification
+            id={id}  // Assuming `id` should be unique
+            body={email.body}
+        />
+    ))
+)}
+
+       
     </ul>
 )}
 
