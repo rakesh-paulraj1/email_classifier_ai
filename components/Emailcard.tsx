@@ -35,7 +35,7 @@ interface EmailCardProps {
                         <div className="text-l text-white font-medium">
                             Subject: {subject}
                         </div>
-                        <div className="text-l  text-black bg-slate-800 font-medium h-[60vh] w-[100vh] overflow-scroll scrollbar-hide border-2 border-slate-700 rounded p-2"  >
+                        <div className="text-l  text-white bg-slate-800 font-medium h-[60vh] w-[100vh] overflow-scroll scrollbar-hide border-2 border-slate-700 rounded p-2"  >
                             <div className="p-5" dangerouslySetInnerHTML={{__html:body.html}}></div>
                             <pre className="flex flex-wrap p-5">{body.text}</pre>
                         </div>
@@ -50,7 +50,7 @@ interface EmailCardProps {
                             Close
                         </button>
                     </div>
-                //side email viewer ends here
+
             )}
 
          <div onClick={openModal} className="block mb-4">
@@ -63,7 +63,7 @@ interface EmailCardProps {
                          {from}
                      </div>
                      <div className="ml-auto">
-                         <div className="text-xl text-white font-semibold">
+                         <div className="text-xl text-black font-semibold">
                              {classification}
                          </div>
                      </div>
